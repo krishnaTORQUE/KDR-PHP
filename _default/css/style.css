@@ -1,0 +1,9 @@
+.main{
+    color: #555;
+    border: 8px dashed #777;
+    width: 50%;
+    border-radius: 8px;
+    margin: 8% auto;
+    padding: 30px;
+    text-align: center;
+}

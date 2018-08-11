@@ -1,0 +1,31 @@
+server {
+    listen 80;
+
+    root /var/www/html;
+    index index.php index.html;
+
+    server_name 127.0.0.1 localhost;
+
+    location ~ /.well-known { 
+        allow all;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    ## KDO Rewrite URL ** Recommend ** ##
+    location /kdo/ {
+        try_files $uri /kdo/__KDO/Main.php?$args;
+    }
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+    	include fastcgi_params;
+
+        ## KDO Set Static Error File Path ##
+    	fastcgi_param ERROR_PATH "/var/www/html/kdo/__KDO/Includes/error.php";
+    }
+
+}

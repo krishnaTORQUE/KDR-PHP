@@ -1,0 +1,17 @@
+<Files .htaccess>
+    Order deny,allow
+    Deny from all
+    Allow from none
+</Files>
+
+Options -Indexes
+
+## KDO Rewrite URL ** Recommend ** ##
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.+)$ __KDO/Main.php/$1 [QSA,L]
+</IfModule>
+
+## KDO Set Static Error File Path ##
+SetEnv ERROR_PATH "/var/www/html/kdo/__KDO/Includes/error.php"
