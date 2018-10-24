@@ -46,9 +46,9 @@ define('PATH', $create_const(dirname($_SERVER['SCRIPT_NAME'])));
 unset($create_const);
 
 /*
- * ********************
- * *** Starting App ***
- * ********************
+ * ******************
+ * *** Processing ***
+ * ******************
  */
 define('MAIN', true);
 ob_start();

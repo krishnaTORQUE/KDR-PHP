@@ -7,13 +7,14 @@ if (!defined('MAIN')) {
 }
 
 class Sys {
+
     /*
      * *******************
      * *** App Details ***
      * *******************
      */
-
     public $APP = [
+
         /*
          * ************************
          * *** Platform Details ***
@@ -21,48 +22,58 @@ class Sys {
          */
         'PLATFORM'     => [
             'NAME'    => 'KDO',
-            'VERSION' => '1.0',
+            'VERSION' => '1.1',
             'STATUS'  => 'Alpha'
         ],
+
         /*
          * App Name
          */
         'NAME'         => 'KDO App',
+
         /*
          * Charset
          */
         'CHARSET'      => 'UTF-8',
+
         /*
          * App Time Zone
          */
         'TIMEZONE'     => '',
+
         /*
          * Active Template Directory Name
          */
         'ACTIVE'       => 'default',
+
         /*
          * App Mode
          * [run, maintain]
          */
         'MODE'         => 'run',
+
         /*
          * App Environment
          * [develop, publish]
          * Server Default If not set
          */
         'ENV'          => 'develop',
+
         /*
          * Static Strings Class File Path
          */
         'STRINGS'      => '',
+
         /*
          * Active Plugings & Autoloads
          */
         'PLUGS'        => [],
+
         /*
          * Minify Payload
          */
         'MIN_PAYLOAD'  => false,
+
         /*
          * Method Type
          * Schema Type
@@ -70,49 +81,76 @@ class Sys {
          * Referer From Host\s
          */
         'REQUEST'      => [
+
             /*
              * Request Method 
              */
             'METHOD'    => ['get', 'post'],
+
             /*
              * Accept Request Schema
              * Set to `any` for All Schemas
              */
             'SCHEME'    => ['http', 'https'],
+
             /*
              * Request From
              * [in, out]
              */
             'FROM'      => '',
+
             /*
              * List of Request From Hosts
              * Add App host too
              */
             'FROM_HOST' => ''
         ],
+
         /*
          * Dynamic Error Page
          * Files Path
          */
         'ERROR'        => [
+            400 => '__KDO/Includes/error.php',
             403 => '__KDO/Includes/error.php',
             404 => '__KDO/Includes/error.php',
             503 => '__KDO/Includes/error.php'
         ],
+
         /*
          * Cookie HTTP Only
          */
         'COOKIE_HTTP'  => true,
+
         /*
          * Set Memory Limit
          */
         'MEMORY_LIMIT' => '128M',
+
         /*
-         * App Case In\Sensitive
+         * Other Options
          */
-        'CASE'         => [
-            'URA' => false,
-            'HSA' => 'low'
+        'OPTIONS'      => [
+
+            /*
+             * URA Values Case In\Sensitive
+             */
+            'URA_CASE'      => false,
+
+            /*
+             * HSA Values Case In\Sensitive
+             */
+            'HSA_CASE'      => 'low',
+
+            /*
+             * Default Query String Allow / Disallow
+             */
+            'QUERY_STR'     => false,
+
+            /*
+             * Allow / Disallow Empty/Bad User Agent
+             */
+            'BAD_USERAGENT' => false
         ]
     ];
 
@@ -122,9 +160,10 @@ class Sys {
      * *********************
      */
     public $META = [
-        'SEPARATE'    => ' - ',
-        'DESCRIPTION' => '',
-        'KEYWORDS'    => ''
+        'SEPARATE'     => ' - ',
+        'DESCRIPTION'  => '',
+        'KEYWORDS'     => '',
+        'CONTENT_TYPE' => 'text/html'
     ];
 
     /*
@@ -168,7 +207,6 @@ class Sys {
      * 
      * If $name = TMP   "If TMP directory is not exists it will create & it will create sub-directory as well"
      */
-
     public function DIR($name, $sub = null) {
 
         $path = false;
@@ -204,7 +242,6 @@ class Sys {
      * 
      * Calling this function will reload $this->URA Values
      */
-
     public function URI($case = false, $dash = false) {
 
         $this->URA = [];
@@ -277,52 +314,79 @@ class Sys {
      * $case = up, low    "up as Upper Case | low as Lower Case."
      * Calling this function will reload $this->HSA Values
      */
+    public function SERVER($case = false) {
 
-    public function HEADERS($case = false) {
+        $this->HSA = $_SERVER;
 
-        $this->HSA = [];
-        $headers = [];
-        foreach ($_SERVER as $name => $value) {
-            if (substr($name, 0, 5) === 'HTTP_') {
-                $headers[str_ireplace(' ', '-', ucwords(strtolower(str_ireplace('_', ' ', substr($name, 5)))))] = $value;
-            }
+        /*
+         * Http Response Code
+         */
+        $this->HSA['RESPONSE'] = (array_key_exists('RESPONSE_CODE', $this->HSA) ? $this->HSA['RESPONSE_CODE'] : http_response_code());
+
+        /*
+         * User Agent & Case
+         */
+        $this->HSA['USERAGENT'] = $this->HSA['HTTP_USER_AGENT'];
+        if ($case === 'up') {
+            $this->HSA['USERAGENT'] = strtoupper($this->HSA['USERAGENT']);
+        } elseif ($case === 'low') {
+            $this->HSA['USERAGENT'] = strtolower($this->HSA['USERAGENT']);
         }
 
-        $this->HSA['HEADER'] = $headers;
-        $this->HSA['SERVER'] = $_SERVER;
-
-        $this->HSA['METHOD'] = $this->HSA['SERVER']['REQUEST_METHOD'];
+        /*
+         * Method & Case
+         */
+        $this->HSA['METHOD'] = $this->HSA['REQUEST_METHOD'];
         if ($case === 'up') {
             $this->HSA['METHOD'] = strtoupper($this->HSA['METHOD']);
         } elseif ($case === 'low') {
             $this->HSA['METHOD'] = strtolower($this->HSA['METHOD']);
         }
 
-        $this->HSA['SCHEME'] = $this->HSA['SERVER']['REQUEST_SCHEME'];
+        /*
+         * Scheme & Case
+         */
+        $this->HSA['SCHEME'] = $this->HSA['REQUEST_SCHEME'];
         if ($case === 'up') {
             $this->HSA['SCHEME'] = strtoupper($this->HSA['SCHEME']);
         } elseif ($case === 'low') {
             $this->HSA['SCHEME'] = strtolower($this->HSA['SCHEME']);
         }
 
-        $this->HSA['X-REQUEST'] = (in_array('HTTP_X_REQUESTED_WITH', $this->HSA['SERVER']) || in_array('X-Requested-With', $this->HSA['SERVER']));
+        /*
+         * X Request Check
+         */
+        $this->HSA['X-REQUEST'] = (array_key_exists('HTTP_X_REQUESTED_WITH', $this->HSA) || array_key_exists('X-Requested-With', $this->HSA));
 
-        if (array_key_exists('Referer', $this->HSA['HEADER']) &&
-            strlen($this->HSA['HEADER']['Referer']) > 1) {
+        /*
+         * Referer Check & Details
+         */
+        if (array_key_exists('HTTP_REFERER', $this->HSA) &&
+            !is_null($this->HSA['HTTP_REFERER']) &&
+            strlen($this->HSA['HTTP_REFERER']) > 1) {
 
-            $this->HSA['REFERER_LINK'] = $this->HSA['HEADER']['Referer'];
+            /*
+             * Referer Link & Case
+             */
+            $this->HSA['REFERER_LINK'] = $this->HSA['HTTP_REFERER'];
             if ($case === 'up') {
                 $this->HSA['REFERER_LINK'] = strtoupper($this->HSA['REFERER_LINK']);
             } elseif ($case === 'low') {
                 $this->HSA['REFERER_LINK'] = strtolower($this->HSA['REFERER_LINK']);
             }
 
-            $this->HSA['PARSE_URL'] = parse_url($this->HSA['REFERER_LINK']);
-            $this->HSA['REFERER_HOST'] = $this->HSA['PARSE_URL']['host'];
+            /*
+             * Referer Host
+             */
+            $this->HSA['REFERER_PARSE_URL'] = parse_url($this->HSA['REFERER_LINK']);
+            $this->HSA['REFERER_HOST'] = $this->HSA['REFERER_PARSE_URL']['host'];
 
             $pattern = '@' . $this->HSA['REFERER_HOST'] . '@i';
             $subject = $this->URA['APP'];
 
+            /*
+             * Check Referer From
+             */
             if (preg_match($pattern, $subject)) {
                 $this->HSA['REFERER_FROM'] = 'in';
             } else {
@@ -339,7 +403,6 @@ class Sys {
      * Get Maintain Mode
      * [Return Bool]
      */
-
     public function MAINTAIN() {
         return ($this->APP['MODE'] === 'maintain' || is_file(ROOT . '.maintain'));
     }
@@ -348,10 +411,11 @@ class Sys {
      * Home Page
      * [Return Bool]
      */
-
     public function HOME() {
-        if ($this->URA['APP'] === $this->URA['FULL'] || strlen($this->URA['PATHS'][0]) < 1 ||
-            $this->URA['FPATH'] === '/' || strlen($this->URA['FPATH']) < 2) {
+        if ($this->URA['APP'] === $this->URA['FULL'] ||
+            $this->URA['FPATH'] === '/' ||
+            strlen($this->URA['FPATH']) < 2 ||
+            (array_key_exists(0, $this->URA['PATHS']) && strlen($this->URA['PATHS'][0]) < 1)) {
 
             return true;
         }

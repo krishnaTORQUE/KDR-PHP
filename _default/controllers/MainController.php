@@ -1,10 +1,11 @@
 <?php
 
 if (!defined('MAIN')) {
-    require $_SERVER['KDO_ERROR'];
+    require $_SERVER['ERROR_PATH'];
 }
 
 $this->ROUTE([
-    'URL' => '/',
-    'METHOD' => ['get']
-], 'home+index');
+    'URL'    => '/',
+    'METHOD' => ['get'],
+    'FUNC'   => 'home+index'
+]);

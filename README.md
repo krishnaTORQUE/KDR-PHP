@@ -5,16 +5,16 @@
 
 > **_Description_**
 
-Next Version of VARPHP or Next Generation of VARPHP
-
 Only PHP MVC (Model View Controller) nothing else. It is a nano framework.
 
-Host Multiple Apps, Lightweight, Powerful, Most Secure & Super Fast
+Host Multiple Apps, Lightweight, Powerful & Secure, Super Fast.
+
+SMALLEST. As small as 40KB Only
 
 
 
 > **_Build_**
-- Version: **1.0**
+- Version: **1.1**
 - Status: **Alpha**
 
 

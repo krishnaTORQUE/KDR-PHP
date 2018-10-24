@@ -1,6 +1,6 @@
 <?php
 if (!defined('MAIN')) {
-    require $_SERVER['KDO_ERROR'];
+    require $_SERVER['ERROR_PATH'];
 }
 ?>
 <div class="main">
@@ -21,8 +21,8 @@ if (!defined('MAIN')) {
 
     <h4>PATH: <?php echo PATH; ?></h4>
 
-    <div>Create <code style="font-weight: bold; font-size: 16px;">`Configure.php`</code>
-        file in root directory and set Configuration.
+    <div>Create <code style="font-weight: bold; font-size: 16px;">`_config.php`</code>
+         file in root directory and set Configuration.
     </div>
 
 </div>

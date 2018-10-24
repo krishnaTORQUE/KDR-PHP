@@ -3,17 +3,25 @@
  * Default Static Error Page
  * Set Default Static Error Page From Server Config File
  */
-
 while (ob_get_contents()) {
     ob_end_clean();
 }
-http_response_code(404);
+
+$http_code = http_response_code();
+if ($http_code < 400) {
+    $http_code = 404;
+}
+http_response_code($http_code);
 ?>
     <!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8"/>
-        <title>Error - Not found</title>
+
+        <meta http-equiv="Content-Type"
+              content="text/html"/>
+
+        <title><?php echo $http_code; ?> Error</title>
 
         <meta name="description"
               content="Page not found. Removed or Down for Maintain"/>
@@ -33,11 +41,24 @@ http_response_code(404);
 
     <body>
     <div class="main">
+
         <h1>
+            <?php echo $http_code; ?>
+            Error
+        </h1>
+
+        <br/>
+
+        <h2>
             Page not found
             <br/><br/>
             Removed or Down for Maintain
-        </h1>
+        </h2>
     </div>
     </body>
-    </html><?php die(); ?>
+    </html>
+<?php
+if (!defined('MAIN')) {
+    die();
+}
+?>

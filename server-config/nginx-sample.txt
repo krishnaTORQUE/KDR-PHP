@@ -26,6 +26,9 @@ server {
 
         ## KDO Set Static Error File Path ##
     	fastcgi_param ERROR_PATH "/var/www/html/kdo/__KDO/Includes/error.php";
+
+    	## KDO Get Response Code ##
+    	fastcgi_param RESPONSE_CODE $status;
     }
 
 }

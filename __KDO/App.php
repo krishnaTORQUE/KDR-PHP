@@ -8,12 +8,6 @@ if (!defined('MAIN')) {
 
 class App extends Sys {
 
-    public static $_;
-
-    private function App_() {
-        self::$_ = $this;
-    }
-
     private $ROUTE_MATCH = false;
 
     /*
@@ -21,7 +15,6 @@ class App extends Sys {
      * *** Setting Up Configs & Variables ***
      * **************************************
      */
-
     public function SETUP() {
 
         /*
@@ -47,28 +40,62 @@ class App extends Sys {
                 break;
         }
 
+        /*
+         * Get Active App Directory
+         */
         $this->DIR['APP'] = '_' . $this->APP['ACTIVE'] . '/';
-        $this->URI($this->APP['CASE']['URA']);
-        $this->HEADERS($this->APP['CASE']['HSA']);
 
+        /*
+         * Load URI & Server Variables
+         */
+        $this->URI($this->APP['OPTIONS']['URA_CASE']);
+        $this->SERVER($this->APP['OPTIONS']['HSA_CASE']);
+
+        /*
+         * Default Memory Limit
+         */
         ini_set('memory_limit', $this->APP['MEMORY_LIMIT']);
 
+        /*
+         * ****************
+         * *** Security ***
+         * ****************
+         */
+
+        /*
+         * Secure Cookies Sessions
+         */
         if (strtolower($this->URA['PROTOCOL']) === 'https') {
             ini_set('session.cookie_secure', 1);
         }
-
         if ($this->APP['COOKIE_HTTP'] === true) {
             ini_set('session.cookie_httponly', 1);
             ini_set('session.use_only_cookies', 1);
         }
 
+        /*
+         * Blocking Empty/Bad Useragent
+         */
+        if (!$this->APP['OPTIONS']['BAD_USERAGENT'] && strlen($this->HSA['USERAGENT']) < 4) {
+            $this->RENDER([
+                'CODE'  => 400,
+                'ERROR' => true
+            ]);
+        }
+
+        /*
+         * Default Timezone
+         */
         if (strlen($this->APP['TIMEZONE']) > 1) {
             date_default_timezone_set($this->APP['TIMEZONE']);
         }
 
+        /*
+         * For Maintain
+         */
         if ($this->MAINTAIN()) {
             $this->RENDER([
-                'code'  => 503,
+                'CODE'  => 503,
                 'ERROR' => true
             ]);
         }
@@ -87,23 +114,30 @@ class App extends Sys {
         }
 
         /*
-         * Global App Access
-         */
-        $this->App_();
-
-        /*
          * Getting Plugins & Autoloads
          */
         $this->PLUGS();
 
-        /*
-         * Calling the App Main Controller
-         */
         $this->META['TITLE'] = $this->APP['NAME'];
 
+        /*
+         * Getting the App Main Controller
+         */
         if (is_file($this->APP_PATH . 'controllers/MainController.php')) {
+
             require $this->APP_PATH . 'controllers/MainController.php';
+
+            /*
+             * Calling Function After Route
+             * Not callable when using / calling RENDER Method
+             */
+            $this->CALL_FUNCS('AFTER_ROUTE');
+
         } else {
+
+            /*
+             * Error if MainController not found
+             */
             $this->RENDER([
                 'CODE'  => 503,
                 'ERROR' => true
@@ -126,7 +160,6 @@ class App extends Sys {
      * *** Adding Plugins & Autoloads ***
      * **********************************
      */
-
     private function PLUGS() {
         $plug_path = ROOT . $this->DIR['PLUGS'];
 
@@ -150,42 +183,30 @@ class App extends Sys {
     }
 
     /*
-     * ************************
-     * *** Add CSS, JS Tags ***
-     * ************************
-     * 
-     * e.g. array_push($this->LOAD_TAGS['CSS'], 'URL');
-     */
-
-    public $LOAD_TAGS = [
-        'ICON' => [
-            'URL'  => '',
-            'TYPE' => ''
-        ],
-        'CSS'  => [],
-        'JS'   => []
-    ];
-
-    public function LOAD_TAGS($which, $str) {
-        array_push($this->LOAD_TAGS[$which], $str);
-    }
-
-    /*
      * *********************
      * *** Add Functions ***
      * *********************
      * 
      * e.g. array_push($this->ADD_FUNC['IN_HEAD'], 'function_name');
      */
-
     public $ADD_FUNC = [
         'BEFORE_HEAD'  => [],
         'IN_HEAD'      => [],
         'IN_BODY'      => [],
         'IN_FOOTER'    => [],
         'AFTER_FOOTER' => [],
+        'AFTER_ROUTE'  => []
     ];
 
+    /*
+     * **********************************
+     * *** Alter Native Add Functions ***
+     * **********************************
+     *
+     * e.g. array_push($this->ADD_FUNC('IN_HEAD', 'function_name');
+     *                      OR
+     * e.g. array_push($this->ADD_FUNC('IN_HEAD', function () {} );
+     */
     public function ADD_FUNC($where, $func) {
         array_push($this->ADD_FUNC[$where], $func);
     }
@@ -195,7 +216,6 @@ class App extends Sys {
      * *** Calling Added Function ***
      * ******************************
      */
-
     protected function CALL_FUNCS($para) {
         if (array_key_exists($para, $this->ADD_FUNC)) {
             foreach ($this->ADD_FUNC[$para] as $func) {
@@ -217,7 +237,6 @@ class App extends Sys {
      * (bool)               $require    "If Exists > (true) Include/Require the path. (false) return path"
      * (array / strings)    $param      "Array or String\s can pass from App Controller to View File"
      */
-
     public function VIEW($name, $param = false) {
         $path = $this->APP_PATH . 'views/' . $name . '.php';
         $this->PARAM = $param;
@@ -233,7 +252,6 @@ class App extends Sys {
      * (bool)               $require    "If Exists > (true) Include/Require the path. (false) return path"
      * (array / strings)    $param      "Array or String\s can pass from App Controller to the File"
      */
-
     public function FILE($name, $param = false) {
         $path = $this->APP_PATH . $name . '.php';
         $this->PARAM = $param;
@@ -255,11 +273,10 @@ class App extends Sys {
      * (array)  $arr['FROM_HOST']   "Referer Host\s Name in Array"
      * (bool)   $arr['X-REQUEST']
      */
-
     public function ROUTE($arr = []) {
 
         if ($this->ROUTE_MATCH) {
-            return false;
+            return;
         }
 
         if (!isset($arr['FUNC'])) {
@@ -272,6 +289,10 @@ class App extends Sys {
 
         if (!isset($arr['SCHEME'])) {
             $arr['SCHEME'] = $this->APP['REQUEST']['SCHEME'];
+        }
+
+        if (!isset($arr['QUERY_STR'])) {
+            $arr['QUERY_STR'] = $this->APP['OPTIONS']['QUERY_STR'];
         }
 
         /*
@@ -303,11 +324,14 @@ class App extends Sys {
                  * Match with String
                  */
             } elseif (strtolower($url[$i]) === strtolower($this->URA['PATHS'][$i])) {
-                if ($this->APP['CASE']['URA'] === 'up') {
+
+                if ($this->APP['OPTIONS']['URA_CASE'] === 'up') {
                     $this->URA['PATHS'][$i] = strtoupper($this->URA['PATHS'][$i]);
-                } elseif ($this->APP['CASE']['URA'] === 'low') {
+
+                } elseif ($this->APP['OPTIONS']['URA_CASE'] === 'low') {
                     $this->URA['PATHS'][$i] = strtolower($this->URA['PATHS'][$i]);
                 }
+
                 $fpath .= '/' . $this->URA['PATHS'][$i];
             }
         }
@@ -316,22 +340,6 @@ class App extends Sys {
          * URL Matched With Given Route
          */
         if ($arr['URL'] === $fpath && count($url) === count($this->URA['PATHS'])) {
-
-            /*
-             * App Strings Send to Client
-             */
-            if (strtoupper($arr['URL']) === '/--STRINGS--' &&
-                isset($this->HSA['REFERER_FROM']) &&
-                strtolower($this->HSA['REFERER_FROM']) === 'in' &&
-                strtolower($this->HSA['METHOD']) === 'post') {
-
-                $this->ROUTE_MATCH = true;
-                if (isset($this->STRINGS)) {
-                    echo json_encode($this->STRINGS, JSON_FORCE_OBJECT);
-                }
-
-                return false;
-            }
 
             /*
              * Request From
@@ -376,7 +384,7 @@ class App extends Sys {
              */
             if (!in_array($this->HSA['METHOD'], $arr['METHOD'])) {
                 $this->RENDER([
-                    'CODE'  => 403,
+                    'CODE'  => 405,
                     'ERROR' => true
                 ]);
             }
@@ -386,9 +394,21 @@ class App extends Sys {
              */
             if (!in_array($this->HSA['SCHEME'], $arr['SCHEME'])) {
                 $this->RENDER([
-                    'CODE'  => 403,
+                    'CODE'  => 405,
                     'ERROR' => true
                 ]);
+            }
+
+            /*
+             * Allowed Query String
+             */
+            if (!$arr['QUERY_STR']) {
+                if (strlen($this->URA['QUERY'] > 0) || count($this->URA['QUERIES']) > 0) {
+                    $this->RENDER([
+                        'CODE'  => 404,
+                        'ERROR' => true
+                    ]);
+                }
             }
 
             /*
@@ -399,6 +419,22 @@ class App extends Sys {
                     'CODE'  => 403,
                     'ERROR' => true
                 ]);
+            }
+
+            /*
+             * App Strings Send to Client
+             */
+            if (strtoupper($arr['URL']) === '/--STRINGS--' &&
+                isset($this->HSA['REFERER_FROM']) &&
+                strtolower($this->HSA['REFERER_FROM']) === 'in' &&
+                strtolower($this->HSA['METHOD']) === 'post') {
+
+                $this->ROUTE_MATCH = true;
+                if (isset($this->STRINGS)) {
+                    echo json_encode($this->STRINGS, JSON_FORCE_OBJECT);
+                }
+
+                return;
             }
 
             foreach ($slug as $key => $value) {
@@ -425,7 +461,7 @@ class App extends Sys {
             }
 
             if ($slug === 'wrong') {
-                return false;
+                return;
             }
 
             /*
@@ -443,8 +479,8 @@ class App extends Sys {
      * 
      * Route Callback to the Function \ Class
      */
-
     private function ROUTE_CALLBACK($cb, $pass_arg = false) {
+
         if (is_string($cb)) {
 
             $obj = explode('+', $cb);
@@ -483,15 +519,15 @@ class App extends Sys {
      * (str)            $arr['DESCRIPTION'] "Meta Tag Description"
      * (str)            $arr['KEYWORDS']    "Meta Tag Keywords"
      */
-
     public function RENDER($arr = []) {
 
         if (!isset($arr['CODE'])) {
-            $arr['CODE'] = 200;
+            $arr['CODE'] = http_response_code();
         }
         if (!isset($arr['ERROR'])) {
             $arr['ERROR'] = false;
         }
+
         if ($arr['ERROR'] && !isset($arr['FILE'])) {
             $arr['FILE'] = ROOT . $this->APP['ERROR'][$arr['CODE']];
         }
@@ -524,10 +560,18 @@ class App extends Sys {
          * Finally Rendering Payload
          */
 
+        /*
+         * Calling Before Head Function
+         */
+        $this->CALL_FUNCS('BEFORE_HEAD');
+
         if ($arr['HEADER'] && is_file($arr['HEADER'])) {
             require $arr['HEADER'];
         }
 
+        /*
+         * Calling Render Files
+         */
         if (is_array($arr['FILE'])) {
             foreach ($arr['FILE'] as $file) {
                 if (is_file($file)) {
@@ -544,15 +588,20 @@ class App extends Sys {
             require $arr['FOOTER'];
         }
 
+        /*
+         * Calling After Footer Function
+         */
+        $this->CALL_FUNCS('AFTER_FOOTER');
+
         die();
     }
 
 }
 
 /*
- * ************************************
+ * ********************************
  * *** Setup & Run App & Render ***
- * ************************************
+ * ********************************
  */
 $App = new App();
 $App->SETUP();
