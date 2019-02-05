@@ -58,4 +58,4 @@ $this->APP['PLUGS'] => ['file_name.php'];
 2. Download new version of KDR and copy & paste **`__KDR`** folder.
 
 
-> **_License (C) 2013 - 2018 under GNU GPL V2._**
+> **_License (C) 2019 under GNU GPL V2._**
