@@ -1,51 +1,54 @@
-![KDO](_default/favicon.png?raw=true "KDO")
-# KDO
+![KDR](_default/favicon.png?raw=true "KDR")
+# KDR
 
 
 
 > **_Description_**
 
-Only PHP MVC (Model View Controller) nothing else. It is a nano framework.
+Only PHP MVC (Model View Controller) nothing else. 
+
+It is a nano framework or Routing Module.
 
 Host Multiple Apps, Lightweight, Powerful & Secure, Super Fast.
 
-SMALLEST. As small as 40KB Only
+**SMALLEST**. As small as less than **50KB**
 
 
 
-> **_Build_**
-- Version: **1.1**
-- Status: **Alpha**
+**v1.3 : _Beta_**
 
 
 
 > **_Tested_**
-- PHP (7.0, 7.1, 7.2)
-- Nginx (1.10, 1.12, 1.14)
+
+- PHP (7.1, 7.2, 7.3)
+- Nginx (1.12, 1.13, 1.14)
 
 
 
 > **_Note_**
 
-- Enable Rewrite Module On.
+- **Not Added** _any_ Library / Module / Class / Function.
 
-- Example Server Configure Files are in **_`server-config`_** folder.
-
-- No Library or Class or Functions Added. 
 Use <a href="https://github.com/krishnaTORQUE/HelperClass" target="_blank">**HelperClass**</a> Instead.
+
+- _Server Configure_ Example Files is in **_`server-config`_** folder.
 
 
 
 > **_Setup_**
 
 ```php
-# Create `_config.php` file in root directory.
-
+/*
+ * Create `_config.php` file in root directory.
+ */
 $this->APP['NAME'] = 'My App';
 $this->APP['ACTIVE'] = 'myapp';
 
-## Using Plugins or Autoloaders ##
-# Create `__PLUGS` folder in root directory and paste your plugins or autoloads.
+/*
+ * Using Plugins or Autoloaders
+ * Create `__PLUGS` folder in root directory and paste your plugins or autoloads
+ */
 $this->APP['PLUGS'] => ['file_name.php'];
 ```
 
@@ -53,9 +56,9 @@ $this->APP['PLUGS'] => ['file_name.php'];
 
 > **_Update_**
 
-**_Always check `CHANGELOG` before update._**
-1. Delete **`__KDO`** folder completely from host.
-2. Download new version of KDO and copy & paste **`__KDO`** folder.
+**Always check _`CHANGELOG`_ before update.**
+1. Delete **`__KDR`** folder completely.
+2. Download new version of KDR and copy & paste **`__KDR`** folder.
 
 
 

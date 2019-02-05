@@ -1,28 +1,32 @@
-<?php
-if (!defined('MAIN')) {
-    require $_SERVER['ERROR_PATH'];
-}
-?>
+<?php if(!defined('ROOT')) require $_SERVER['ERROR_PATH']; ?>
+
 <div class="main">
 
-    <img src="<?php echo $this->APP_URL; ?>favicon.png"/>
+    <img src="{{ $this->APP_URL }}assets/favicon.png?v={{ $this->APP['PLATFORM']['VERSION'].$this->APP['PLATFORM']['STATUS'] }}"/>
 
-    <h2>Welcome to <?php echo $this->APP['PLATFORM']['NAME']; ?></h2>
+    <div class="details">
+        [
+        v{{ $this->APP['PLATFORM']['VERSION'] }}
+        :
+        <i>{{ $this->APP['PLATFORM']['STATUS'] }}</i>
+        ]
+    </div>
 
-    <h5>
-        Version: <?php echo $this->APP['PLATFORM']['VERSION']; ?>
-        &nbsp;
-        Status: <?php echo $this->APP['PLATFORM']['STATUS']; ?>
-    </h5>
+    <div class="details">
+        <i>URL</i>: {{ APP }}
+    </div>
 
-    <h4>URL: <?php echo $this->URA['APP']; ?></h4>
+    <div class="details">
+        <i>ROOT</i>: {{ ROOT }}
+    </div>
 
-    <h4>ROOT: <?php echo ROOT; ?></h4>
+    <div class="details">
+        <i>PATH</i>: {{ PATH }}
+    </div>
 
-    <h4>PATH: <?php echo PATH; ?></h4>
-
-    <div>Create <code style="font-weight: bold; font-size: 16px;">`_config.php`</code>
-         file in root directory and set Configuration.
+    <div class="details">
+        Create <code class="code">`_config.php`</code>
+        file in root directory and set Configuration.
     </div>
 
 </div>

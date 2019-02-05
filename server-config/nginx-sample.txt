@@ -14,21 +14,20 @@ server {
         try_files $uri $uri/ =404;
     }
 
-    ## KDO Rewrite URL ** Recommend ** ##
-    location /kdo/ {
-        try_files $uri /kdo/__KDO/Main.php?$args;
+    # Rewrite URL *Recommend* #
+    location /kdr/ {
+        try_files $uri /kdr/__KDR/Main.php?$args;
     }
 
     location ~ \.php$ {
         include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/run/php/php7.2-fpm.sock;
+        fastcgi_pass unix:/run/php/php7.3-fpm.sock;
     	include fastcgi_params;
 
-        ## KDO Set Static Error File Path ##
-    	fastcgi_param ERROR_PATH "/var/www/html/kdo/__KDO/Includes/error.php";
+        # Set Static Error File Path #
+    	fastcgi_param ERROR_PATH "/var/www/html/kdr/__KDR/Includes/error.php";
 
-    	## KDO Get Response Code ##
+    	# Get Response Code #
     	fastcgi_param RESPONSE_CODE $status;
     }
-
 }

@@ -1,0 +1,21 @@
+.main {
+    color         : #444444;
+    border        : 4px dashed #444444;
+    width         : 50%;
+    border-radius : 40px;
+    margin        : 8% auto;
+    padding       : 30px;
+    text-align    : center;
+    font-family   : Tahoma, Helvetica, Arial, sans-serif;
+}
+
+.details {
+    font-weight : bold;
+    margin-top  : 2%;
+}
+
+.code {
+    font-weight : bold;
+    font-size   : 14px;
+    font-style  : italic;
+}

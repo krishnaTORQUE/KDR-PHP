@@ -1,8 +1,6 @@
 <?php
 
-if (!defined('MAIN')) {
-    require $_SERVER['ERROR_PATH'];
-}
+if(!defined('ROOT')) require $_SERVER['ERROR_PATH'];
 
 $this->ROUTE([
     'URL'    => '/',
