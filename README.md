@@ -1,4 +1,4 @@
-![KDR](_default/favicon.png?raw=true "KDR")
+![KDR](_default/assets/favicon.png?raw=true "KDR")
 # KDR
 
 
