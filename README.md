@@ -53,7 +53,7 @@ $this->APP['PLUGS'] => ['file_name.php'];
 > ## _Note_
 
 - **Not Added**: _any_ Library / Class / Function.
-- Use <a href="https://github.com/krishnaTORQUE/HelperClass" target="_blank">**HelperClass**</a> Instead.
+- Use <a href="https://github.com/krishnaTORQUE/Helper-PHP" target="_blank">**Helper-PHP**</a> Instead.
 
 
 > ## _License (C) 2019 under GNU GPL V2._

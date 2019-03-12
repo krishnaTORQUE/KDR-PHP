@@ -1,9 +1,9 @@
-### Change Log & History
+# Change Log & History
 
 > ##### 12-02-2019 ~ _v1.4_ : _Stable_
 
     Minor Changes
-    Complete Checkup
+    Review All Files
 
 > ##### 06-02-2019 ~ _v1.3_ : _Beta_
 
