@@ -1,5 +1,5 @@
 <?php
-/**
+/*
  * Default Static Error Page
  * Set Default Static Error Page From Server Config File
  */

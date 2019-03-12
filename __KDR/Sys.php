@@ -11,7 +11,7 @@ class Sys {
         'PATH' => PATH
     ];
 
-    /**
+    /*
      * ***************************
      *        Details OF
      *  App, Platform, Config etc
@@ -25,8 +25,8 @@ class Sys {
          */
         'PLATFORM'     => [
             'NAME'    => 'KDR',
-            'VERSION' => '1.3',
-            'STATUS'  => 'Beta'
+            'VERSION' => '1.4',
+            'STATUS'  => 'Stable'
         ],
 
         /*
@@ -160,12 +160,12 @@ class Sys {
             /**
              * Maximum URL Characters Length
              * Modern Browser:  2083
-             * Default:         1020
+             * Default:         1000
              *
              * @value int       Limit Number. @False for no limit
              *                                  (Browser Default)
              */
-            'MAX_URI_CHAR'    => 1020,
+            'MAX_URI_CHAR'    => 1000,
 
             /**
              * Block Bad Agent
@@ -272,7 +272,7 @@ class Sys {
         return $path;
     }
 
-    /**
+    /*
      * ************************************
      * *** Filtered Parse URL/URI Array ***
      * ************************************
@@ -320,7 +320,7 @@ class Sys {
         unset($full, $fpath, $query, $qstre, $QUERIES);
     }
 
-    /**
+    /*
      * *****************************
      * *** Header & Server Array ***
      * *****************************

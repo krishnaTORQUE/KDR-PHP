@@ -9,7 +9,7 @@ class App extends Sys {
     private $ROUTE_MATCH = false;
     private $PAYLOAD = '';
 
-    /**
+    /*
      * **************************************
      * *** Setting Up Configs & Variables ***
      * **************************************
@@ -23,7 +23,7 @@ class App extends Sys {
             require ROOT . '_config.php';
         }
 
-        /**
+        /*
          * ************************************
          * *** Initialize The Configuration ***
          * ************************************
@@ -52,7 +52,7 @@ class App extends Sys {
          */
         $this->DIR['APP'] = '_' . $this->APP['ACTIVE'] . '/';
 
-        /**
+        /*
          * ****************
          * *** Security ***
          * ****************
@@ -63,7 +63,7 @@ class App extends Sys {
          */
         ini_set('memory_limit', $this->APP['MEMORY_LIMIT']);
 
-        /**
+        /*
          * Checking Bad UserAgent
          */
         if(strlen($this->HSA['USERAGENT']) < 6 ||
@@ -94,7 +94,7 @@ class App extends Sys {
             ]);
         }
 
-        /**
+        /*
          * Secure Cookies Sessions
          */
         if(strtolower($this->URA['PROTOCOL']) === 'https') {
@@ -106,7 +106,7 @@ class App extends Sys {
             ini_set('session.use_only_cookies', 1);
         }
 
-        /**
+        /*
          * *******************************
          * *** Progress After Security ***
          * *******************************
@@ -202,7 +202,7 @@ class App extends Sys {
         }
     }
 
-    /**
+    /*
      * **********************************
      * *** Adding Plugins & Autoloads ***
      * **********************************
@@ -624,12 +624,10 @@ class App extends Sys {
         }
     }
 
-    /**
+    /*
      * **********************
      * *** Route Callback ***
      * **********************
-     *
-     * Route Callback to the Function \ Class
      */
     private function ROUTE_CALLBACK($cb, $pass_arg = false) {
 
@@ -722,7 +720,7 @@ class App extends Sys {
 
         http_response_code($arr['CODE']);
 
-        /**
+        /*
          * *********************************
          * *** Finally Rendering Payload ***
          * *********************************
@@ -792,12 +790,12 @@ class App extends Sys {
     }
 }
 
-/**
+/*
  * ********************************
  * *** Setup & Run & Render App ***
  * ********************************
  *
- *      ## For System Only ##
+ * ## For System Only ##
  */
 $App = new App();
 $App->RUN();
