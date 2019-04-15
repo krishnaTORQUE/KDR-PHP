@@ -12,7 +12,7 @@ if(!defined('ROOT')) require $_SERVER['ERROR_PATH'];
 $http_response_code = http_response_code();
 ?>
 
-{( if ($http_response_code > 199 && $http_response_code < 400 && isset($this->STRINGS)) )}
+{( if $http_response_code > 199 && $http_response_code < 400 && isset($this->STRINGS) )}
 <script defer
         type="text/javascript">
 

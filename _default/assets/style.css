@@ -1,8 +1,8 @@
 .main {
     color         : #444444;
-    border        : 4px dashed #444444;
     width         : 50%;
-    border-radius : 40px;
+    border        : 2px dashed #444444;
+    border-radius : 18px;
     margin        : 8% auto;
     padding       : 30px;
     text-align    : center;

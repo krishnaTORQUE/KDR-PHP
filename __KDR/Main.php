@@ -34,6 +34,7 @@ $mkconst = function($path) {
 define('ROOT', $mkconst(dirname(__FILE__)));
 define('PATH', $mkconst(dirname($_SERVER['SCRIPT_NAME'])));
 
+$mkconst = null;
 unset($mkconst);
 
 /**

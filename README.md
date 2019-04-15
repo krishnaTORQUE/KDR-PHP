@@ -1,13 +1,11 @@
 ![KDR](_default/assets/favicon.png?raw=true "KDR")
 
-**v1.4 : _Stable_**
+**v1.5 : _Stable_**
 
 
 > #### _Description_
 
-Only PHP MVC (Model View Controller) nothing else. 
-
-It is a nano framework or Routing Module.
+It is a micro (MVC) framework.
 
 Host Multiple Apps, Lightweight, Powerful & Secure, Super Fast.
 
@@ -57,3 +55,4 @@ $this->APP['PLUGS'] => ['file_name.php'];
 
 
 > ## _License (C) 2019 under GNU GPL V2._
+

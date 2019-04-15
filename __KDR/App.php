@@ -67,7 +67,8 @@ class App extends Sys {
          * Checking Bad UserAgent
          */
         if(strlen($this->HSA['USERAGENT']) < 6 ||
-            strtolower($this->HSA['USERAGENT']) === strtolower('Mozilla/5.0')) {
+            strtolower($this->HSA['USERAGENT']) === strtolower('Mozilla/5.0') ||
+            preg_match('@\/\.[\w\d]+|\.\/[\w\d]+@', $this->URA['FULL'])) {
 
             $this->APP['SECURITY']['BAD_AGENT'] = true;
 
@@ -289,9 +290,9 @@ class App extends Sys {
      * *** Adding View / Template File ***
      * ***********************************
      *
-     * @param   string $name            Only Name of the file with is located in App `views` directory
-     * @param   array  $assign          Assign Variables for View File
-     * @param   array  $arr             Options
+     * @param string $name              Only Name of the file with is located in App `views` directory
+     * @param array  $assign            Assign Variables for View File
+     * @param array  $arr               Options
      *                                  $arr[xt]        Extension of the blade file
      *                                  $arr[no-tag]    Disable Converting
      *                                  $arr[e]         Execute Now
@@ -341,30 +342,30 @@ class App extends Sys {
                  * Method & Function
                  */
                 $search = [
-                    '@\{\( if(.*?) \)\}@i',
-                    '@\{\( elseif(.*?) \)\}@i',
+                    '@\{\( if (.*?) \)\}@i',
+                    '@\{\( elif (.*?) \)\}@i',
                     '@\{\( else \)\}@i',
                     '@\{\( endif \)\}@i',
-                    '@\{\( foreach(.*?) \)\}@i',
-                    '@\{\( endforeach \)\}@i',
-                    '@\{\( for(.*?) \)\}@i',
+                    '@\{\( each (.*?) \)\}@i',
+                    '@\{\( endeach \)\}@i',
+                    '@\{\( for (.*?) \)\}@i',
                     '@\{\( endfor \)\}@i',
-                    '@\{\( while(.*?) \)\}@i',
+                    '@\{\( while (.*?) \)\}@i',
                     '@\{\( endwhile \)\}@i',
                     '@\{\{ (.*?) \}\}@i',
                     '@\{\( (.*?) \)\}@i'
                 ];
 
                 $replace = [
-                    '<?php if $1: ?>',
-                    '<?php elseif $1: ?>',
+                    '<?php if($1): ?>',
+                    '<?php elseif($1): ?>',
                     '<?php else: ?>',
                     '<?php endif; ?>',
-                    '<?php foreach $1: ?>',
+                    '<?php foreach($1): ?>',
                     '<?php endforeach; ?>',
-                    '<?php for $1: ?>',
+                    '<?php for($1): ?>',
                     '<?php endfor; ?>',
-                    '<?php while $1: ?>',
+                    '<?php while($1): ?>',
                     '<?php endwhile; ?>',
                     '<?php echo $1; ?>',
                     '<?php $1; ?>'
@@ -674,7 +675,7 @@ class App extends Sys {
      * *** Final Payload Rendering ***
      * *******************************
      *
-     * @param   array $arr Options
+     * @param array $arr Options
      *
      *          int   $arr[CODE]          Response Code
      *          bool  $arr[ERROR]         Is Error

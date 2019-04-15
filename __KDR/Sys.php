@@ -25,7 +25,7 @@ class Sys {
          */
         'PLATFORM'     => [
             'NAME'    => 'KDR',
-            'VERSION' => '1.4',
+            'VERSION' => '1.5',
             'STATUS'  => 'Stable'
         ],
 

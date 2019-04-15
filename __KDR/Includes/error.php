@@ -28,10 +28,10 @@ http_response_code($http_code);
 
     <style type="text/css">
         .main {
-            color         : #444;
-            border        : 5px dashed #444;
+            color         : #444444;
             width         : 50%;
-            border-radius : 8px;
+            border        : 2px dashed #444444;
+            border-radius : 18px;
             margin        : 8% auto;
             padding       : 30px;
             text-align    : center;
