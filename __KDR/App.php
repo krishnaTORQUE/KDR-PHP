@@ -9,27 +9,27 @@ class App extends Sys {
     private $ROUTE_MATCH = false;
     private $PAYLOAD = '';
 
-    /*
+    /**
      * **************************************
      * *** Setting Up Configs & Variables ***
      * **************************************
      */
     public function RUN() {
 
-        /*
+        /**
          * Getting The Configuration
          */
         if(is_file(ROOT . '_config.php')) {
             require ROOT . '_config.php';
         }
 
-        /*
+        /**
          * ************************************
          * *** Initialize The Configuration ***
          * ************************************
          */
 
-        /*
+        /**
          * Setting up Environment
          */
         if($this->APP['PUBLISH']) {
@@ -41,38 +41,38 @@ class App extends Sys {
             ini_set('display_errors', 1);
         }
 
-        /*
+        /**
          * Load URI & Server Variables
          */
         $this->URI();
         $this->SERVER();
 
-        /*
+        /**
          * Get Active App Directory
          */
         $this->DIR['APP'] = '_' . $this->APP['ACTIVE'] . '/';
 
-        /*
+        /**
          * ****************
          * *** Security ***
          * ****************
          */
 
-        /*
+        /**
          * Default Memory Limit
          */
         ini_set('memory_limit', $this->APP['MEMORY_LIMIT']);
 
-        /*
+        /**
          * Checking Bad UserAgent
          */
         if(strlen($this->HSA['USERAGENT']) < 6 ||
             strtolower($this->HSA['USERAGENT']) === strtolower('Mozilla/5.0') ||
-            preg_match('@\/\.[\w\d]+|\.\/[\w\d]+@', $this->URA['FULL'])) {
+            preg_match('@\/\.[\w\d]+@', $this->URA['FULL'])) {
 
             $this->APP['SECURITY']['BAD_AGENT'] = true;
 
-            /*
+            /**
              * Blocking If Found
              */
             if($this->APP['SECURITY']['BAD_AGENT_BLOCK']) {
@@ -83,7 +83,7 @@ class App extends Sys {
             }
         }
 
-        /*
+        /**
          * Blocking Large URL/URI
          */
         if($this->APP['SECURITY']['MAX_URI_CHAR'] &&
@@ -95,7 +95,7 @@ class App extends Sys {
             ]);
         }
 
-        /*
+        /**
          * Secure Cookies Sessions
          */
         if(strtolower($this->URA['PROTOCOL']) === 'https') {
@@ -107,13 +107,13 @@ class App extends Sys {
             ini_set('session.use_only_cookies', 1);
         }
 
-        /*
+        /**
          * *******************************
          * *** Progress After Security ***
          * *******************************
          */
 
-        /*
+        /**
          * For Maintain
          */
         if($this->MAINTAIN()) {
@@ -123,14 +123,14 @@ class App extends Sys {
             ]);
         }
 
-        /*
+        /**
          * Default Timezone
          */
         if($this->APP['TIMEZONE']) {
             date_default_timezone_set($this->APP['TIMEZONE']);
         }
 
-        /*
+        /**
          * Setup Global Variable & Array
          */
         $this->APP_URL = $this->URA['APP'] . $this->DIR['APP'];
@@ -148,7 +148,7 @@ class App extends Sys {
         $this->AFA = array_merge($this->AFA, $this->URA);
         $this->AFA = array_merge($this->AFA, $this->HSA);
 
-        /*
+        /**
          * Making App Strings if exists
          */
         if($this->APP['STRINGS']) {
@@ -158,24 +158,24 @@ class App extends Sys {
             unset($strings);
         }
 
-        /*
+        /**
          * Getting Plugins & Autoloads
          */
         $this->PLUGS();
 
         $this->MTTR['TITLE'] = $this->APP['NAME'];
 
-        /*
+        /**
          * Getting the App Main Controller
          */
         if(is_file($this->APP_PATH . 'controllers/MainController.php')) {
 
-            /*
+            /**
              * Include Main Controller
              */
             require $this->APP_PATH . 'controllers/MainController.php';
 
-            /*
+            /**
              * Calling Function After Route
              * Not callable when using / calling RENDER Method
              */
@@ -183,7 +183,7 @@ class App extends Sys {
 
         } else {
 
-            /*
+            /**
              * Error if Main Controller not found
              */
             $this->RENDER([
@@ -192,7 +192,7 @@ class App extends Sys {
             ]);
         }
 
-        /*
+        /**
          * Error if no Route Match
          */
         if(!$this->ROUTE_MATCH) {
@@ -203,7 +203,7 @@ class App extends Sys {
         }
     }
 
-    /*
+    /**
      * **********************************
      * *** Adding Plugins & Autoloads ***
      * **********************************
@@ -320,12 +320,12 @@ class App extends Sys {
 
             $content = file_get_contents($path);
 
-            /*
+            /**
              * Disable Convert
              */
             if(!isset($arr['no-tag'])) {
 
-                /*
+                /**
                  * Print Value
                  */
                 foreach($this->AFA as $key => $val) {
@@ -338,14 +338,14 @@ class App extends Sys {
                     }
                 }
 
-                /*
+                /**
                  * Method & Function
                  */
                 $search = [
                     '@\{\( if (.*?) \)\}@i',
                     '@\{\( elif (.*?) \)\}@i',
                     '@\{\( else \)\}@i',
-                    '@\{\( endif \)\}@i',
+                    '@\{\( fi \)\}@i',
                     '@\{\( each (.*?) \)\}@i',
                     '@\{\( endeach \)\}@i',
                     '@\{\( for (.*?) \)\}@i',
@@ -433,14 +433,14 @@ class App extends Sys {
             $arr['X_REQUEST'] = $this->APP['REQUEST']['X_REQUEST'];
         }
 
-        /*
+        /**
          * Static & Dynamic / Slug URL match with given Route
          */
         $url = explode('/', $this->TRIMS($arr['URL']));
         $slug = [];
         $fpath = '';
 
-        /*
+        /**
          * Arrange URL with Route
          */
         for($i = 0; $i < count($url); $i++) {
@@ -451,14 +451,14 @@ class App extends Sys {
 
             preg_match_all('@\{(.*?)\}@i', $url[$i], $url_match);
 
-            /*
+            /**
              * Match with Slug
              */
             if(array_key_exists(0, $url_match[0])) {
                 $slug[$url_match[1][0]] = $this->URA['PATHS'][$i];
                 $fpath .= '/' . $url_match[0][0];
 
-                /*
+                /**
                  * Match with String
                  */
             } elseif(strtolower($url[$i]) === strtolower($this->URA['PATHS'][$i])) {
@@ -466,17 +466,17 @@ class App extends Sys {
             }
         }
 
-        /*
+        /**
          * URL Matched With Given Route
          */
         if(strtolower($arr['URL']) === strtolower($fpath) &&
             count($url) === count($this->URA['PATHS'])) {
 
-            /*
+            /**
              * Request From
              */
             if(isset($arr['FROM'])) {
-                /*
+                /**
                  * Custom
                  */
                 if(!isset($this->HSA['REFERER_FROM']) ||
@@ -489,7 +489,7 @@ class App extends Sys {
                 }
 
             } elseif(strlen($this->APP['REQUEST']['FROM']) > 0) {
-                /*
+                /**
                  * Config
                  */
                 if(!isset($this->HSA['REFERER_FROM']) ||
@@ -502,11 +502,11 @@ class App extends Sys {
                 }
             }
 
-            /*
+            /**
              * Request From Host
              */
             if(isset($arr['FROM_HOST'])) {
-                /*
+                /**
                  * Custom
                  */
                 if(!isset($this->HSA['REFERER_HOST']) ||
@@ -519,7 +519,7 @@ class App extends Sys {
                 }
 
             } elseif(is_array($this->APP['REQUEST']['FROM_HOST'])) {
-                /*
+                /**
                  * Config
                  */
                 if(!isset($this->HSA['REFERER_HOST']) ||
@@ -532,7 +532,7 @@ class App extends Sys {
                 }
             }
 
-            /*
+            /**
              * Request Method
              */
             if(!preg_grep('@' . $this->HSA['METHOD'] . '@i', $arr['METHOD'])) {
@@ -542,7 +542,7 @@ class App extends Sys {
                 ]);
             }
 
-            /*
+            /**
              * Request Schema
              */
             if(!preg_grep('@' . $this->HSA['SCHEME'] . '@i', $arr['SCHEME'])) {
@@ -552,7 +552,7 @@ class App extends Sys {
                 ]);
             }
 
-            /*
+            /**
              * Query String
              */
             if(!$arr['QUERY_STR']) {
@@ -564,7 +564,7 @@ class App extends Sys {
                 }
             }
 
-            /*
+            /**
              * X REQUEST
              */
             if(!$arr['X_REQUEST'] && $this->HSA['X_REQUEST']) {
@@ -574,7 +574,7 @@ class App extends Sys {
                 ]);
             }
 
-            /*
+            /**
              * App Strings Send to Client
              */
             if(strtoupper($arr['URL']) === '/--STRINGS--' &&
@@ -592,14 +592,14 @@ class App extends Sys {
 
             foreach($slug as $key => $value) {
 
-                /*
+                /**
                  * Trim Slug URL
                  */
                 if(isset($arr['TRIM']) && is_array($arr['TRIM']) && array_key_exists($key, $arr['TRIM'])) {
                     $slug[$key] = preg_replace($arr['TRIM'][$key], '', $value);
                 }
 
-                /*
+                /**
                  * Match Slug URL
                  */
                 if(isset($arr['MATCH']) && is_array($arr['MATCH']) && array_key_exists($key, $arr['MATCH'])) {
@@ -617,7 +617,7 @@ class App extends Sys {
                 return;
             }
 
-            /*
+            /**
              * Callback to App Controller
              */
             $this->ROUTE_MATCH = true;
@@ -625,7 +625,7 @@ class App extends Sys {
         }
     }
 
-    /*
+    /**
      * **********************
      * *** Route Callback ***
      * **********************
@@ -633,11 +633,9 @@ class App extends Sys {
     private function ROUTE_CALLBACK($cb, $pass_arg = false) {
 
         if(is_string($cb)) {
-
-            /*
+            /**
              * Callback is a Class
              */
-
             $obj = explode('+', $cb);
 
             require $this->APP_PATH . 'controllers/' . $obj[0] . '.php';
@@ -650,19 +648,15 @@ class App extends Sys {
             }
 
         } elseif(is_callable($cb)) {
-
-            /*
+            /**
              * Callback is Function
              */
-
             $cb($this, $pass_arg);
 
         } else {
-
-            /*
+            /**
              * Nothing Match
              */
-
             $this->RENDER([
                 'CODE'  => 404,
                 'ERROR' => true
@@ -721,18 +715,18 @@ class App extends Sys {
 
         http_response_code($arr['CODE']);
 
-        /*
+        /**
          * *********************************
          * *** Finally Rendering Payload ***
          * *********************************
          */
 
-        /*
+        /**
          * Calling Before Head Function
          */
         $this->CALL_FUNCS('BEFORE_HEAD');
 
-        /*
+        /**
          * Getting Body Content
          */
         $payload_body = $this->PAYLOAD;
@@ -740,7 +734,7 @@ class App extends Sys {
 
         if($arr['ERROR']) {
 
-            /*
+            /**
              * Error File
              */
             $file = str_replace($this->APP['BLADE_XT'], '', $this->HSA['ERROR_PATH']);
@@ -751,7 +745,7 @@ class App extends Sys {
                 $file = ROOT . $this->APP['ERROR'][$arr['CODE']];
             }
 
-            /*
+            /**
              * Error Content
              */
             $this->BLADE('', [], ['location' => $file]);
@@ -759,21 +753,21 @@ class App extends Sys {
             $this->PAYLOAD = '';
         }
 
-        /*
+        /**
          * Getting Header Content
          */
         $this->BLADE('', [], ['location' => $arr['HEADER']]);
         $payload_header = $this->PAYLOAD;
         $this->PAYLOAD = '';
 
-        /*
+        /**
          * Getting Footer Content
          */
         $this->BLADE('', [], ['location' => $arr['FOOTER']]);
         $payload_footer = $this->PAYLOAD;
         $this->PAYLOAD = '';
 
-        /*
+        /**
          * Calling After Footer Function
          */
         $this->CALL_FUNCS('AFTER_FOOTER');
@@ -791,7 +785,7 @@ class App extends Sys {
     }
 }
 
-/*
+/**
  * ********************************
  * *** Setup & Run & Render App ***
  * ********************************

@@ -8,18 +8,14 @@
 ##   ##  ##     ## ##    ##
 ##    ## ########  ##     ##
 
-/*
- * ******************************
- * ***     Main Entry Point   ***
- * *** BootLoader / BootStrap ***
- * ******************************
+/**
+ * ************************
+ * *** Main Entry Point ***
+ * ************************
  */
 
 /**
- * **********************
- * *** Setup Constant ***
- * *** Process Files  ***
- * **********************
+ * Making Constant
  */
 $mkconst = function($path) {
     $path = str_ireplace('\\', '/', $path);
@@ -31,14 +27,14 @@ $mkconst = function($path) {
 /**
  * Define Constants
  */
-define('ROOT', $mkconst(dirname(__FILE__)));
+define('ROOT', $mkconst(__DIR__));
 define('PATH', $mkconst(dirname($_SERVER['SCRIPT_NAME'])));
 
 $mkconst = null;
 unset($mkconst);
 
 /**
- * Start
+ * Start App
  */
 ob_start();
 require __DIR__ . '/Sys.php';

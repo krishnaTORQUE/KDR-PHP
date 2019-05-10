@@ -1,5 +1,13 @@
 # Change Log & History
 
+> ##### 10-05-2019 ~ _v1.6_ : _Stable_
+
+    Minor Changes
+    Review All Files
+    :: Improved ::
+        Blade
+        Security
+
 > ##### 15-04-2019 ~ _v1.5_ : _Stable_
 
     :: Improved ::

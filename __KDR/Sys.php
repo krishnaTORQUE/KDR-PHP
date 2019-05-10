@@ -11,7 +11,7 @@ class Sys {
         'PATH' => PATH
     ];
 
-    /*
+    /**
      * ***************************
      *        Details OF
      *  App, Platform, Config etc
@@ -19,48 +19,48 @@ class Sys {
      */
     public $APP = [
 
-        /*
+        /**
          * Platform Details
          * ## Read Only ##
          */
         'PLATFORM'     => [
             'NAME'    => 'KDR',
-            'VERSION' => '1.5',
+            'VERSION' => '1.6',
             'STATUS'  => 'Stable'
         ],
 
-        /*
+        /**
          * App Name
          */
         'NAME'         => 'KDR',
 
-        /*
+        /**
          * App Charset
          */
         'CHARSET'      => 'UTF-8',
 
-        /*
+        /**
          * Set Memory Limit
          */
         'MEMORY_LIMIT' => '128M',
 
-        /*
+        /**
          * App TimeZone
          */
         'TIMEZONE'     => false,
 
-        /*
+        /**
          * Active App Directory Name
          */
         'ACTIVE'       => 'default',
 
-        /*
+        /**
          * Blade System
          * File Extension
          */
         'BLADE_XT'     => '.php',
 
-        /*
+        /**
          * Static Strings Class File Path
          */
         'STRINGS'      => false,
@@ -93,17 +93,17 @@ class Sys {
          */
         'PLUGS'        => [],
 
-        /*
+        /**
          * Request & Referer
          */
         'REQUEST'      => [
 
-            /*
-             * Request Method 
+            /**
+             * Request Method
              */
             'METHOD'    => ['get', 'post'],
 
-            /*
+            /**
              * Accept Request Schema
              * Set to `any` for All Schemas
              */
@@ -135,7 +135,7 @@ class Sys {
              *        true    for allow
              *        false   for deny
              */
-            'QUERY_STR' => false,
+            'QUERY_STR' => true,
 
             /**
              * X Request
@@ -144,15 +144,15 @@ class Sys {
              *        true    for allow
              *        false   for deny
              */
-            'X_REQUEST' => false
+            'X_REQUEST' => true
         ],
 
-        /*
+        /**
          * Security Options
          */
         'SECURITY'     => [
 
-            /*
+            /**
              * Cookie HTTP Only
              */
             'COOKIE_HTTP'     => true,
@@ -196,14 +196,14 @@ class Sys {
         'ERROR'        => []
     ];
 
-    /*
+    /**
      * ********************
      * *** Global Array ***
      * ********************
      */
     public $GLOB = [];
 
-    /*
+    /**
      * ******************************
      * *** HTML Tags & Attributes ***
      * ******************************
@@ -219,7 +219,7 @@ class Sys {
         'TYPE'        => 'text/html'
     ];
 
-    /*
+    /**
      * ***********************
      * *** Directory Paths ***
      * ***********************
@@ -272,7 +272,7 @@ class Sys {
         return $path;
     }
 
-    /*
+    /**
      * ************************************
      * *** Filtered Parse URL/URI Array ***
      * ************************************
@@ -320,7 +320,7 @@ class Sys {
         unset($full, $fpath, $query, $qstre, $QUERIES);
     }
 
-    /*
+    /**
      * *****************************
      * *** Header & Server Array ***
      * *****************************
@@ -329,52 +329,52 @@ class Sys {
 
         $this->HSA = $_SERVER;
 
-        /*
+        /**
          * Http Response Code
          */
         $this->HSA['RESPONSE'] = (array_key_exists('RESPONSE_CODE', $this->HSA) && $this->HSA['RESPONSE_CODE'] > 99) ?
             $this->HSA['RESPONSE_CODE'] : http_response_code();
 
-        /*
+        /**
          * User Agent & Case
          */
         $this->HSA['USERAGENT'] = $this->TRIMS($this->HSA['HTTP_USER_AGENT']);
 
-        /*
+        /**
          * Method & Case
          */
         $this->HSA['METHOD'] = $this->TRIMS($this->HSA['REQUEST_METHOD']);
 
-        /*
+        /**
          * Scheme & Case
          */
         $this->HSA['SCHEME'] = $this->HSA['REQUEST_SCHEME'];
 
-        /*
+        /**
          * X Request Check
          */
         $this->HSA['X_REQUEST'] = (array_key_exists('HTTP_X_REQUESTED_WITH',
                 $this->HSA) || array_key_exists('X-Requested-With', $this->HSA));
 
-        /*
+        /**
          * Referer Check & Details
          */
         if(array_key_exists('HTTP_REFERER', $this->HSA) &&
             !is_null($this->HSA['HTTP_REFERER']) &&
             strlen($this->HSA['HTTP_REFERER']) > 1) {
 
-            /*
+            /**
              * Referer Link & Case
              */
             $this->HSA['REFERER_LINK'] = $this->HSA['HTTP_REFERER'];
 
-            /*
+            /**
              * Referer Host
              */
             $this->HSA['REFERER_PARSE_URL'] = parse_url($this->HSA['REFERER_LINK']);
             $this->HSA['REFERER_HOST'] = $this->HSA['REFERER_PARSE_URL']['host'];
 
-            /*
+            /**
              * Check Referer From
              */
             $pattern = '@' . $this->HSA['REFERER_HOST'] . '@i';
@@ -411,7 +411,7 @@ class Sys {
         return ($this->APP['MAINTAIN'] || is_file(ROOT . '.maintain'));
     }
 
-    /*
+    /**
      * Trim Content
      * ## For System Only ##
      */

@@ -2,11 +2,11 @@
 
 if(!defined('ROOT')) require $_SERVER['ERROR_PATH'];
 
-/*
+/**
  * Default Header File
  */
 
-/*
+/**
  * Minify Payload
  */
 if($this->APP['MIN_PAYLOAD'] === true) {
@@ -42,12 +42,12 @@ if($this->APP['MIN_PAYLOAD'] === true) {
 {( if strlen($this->TRIMS($this->MTTR['DESCRIPTION'])) > 0 )}
 <meta name="description"
       content="{{ $this->TRIMS($this->MTTR['DESCRIPTION']) }}"/>
-{( endif )}
+{( fi )}
 
 {( if strlen($this->TRIMS($this->MTTR['KEYWORDS'])) > 0 )}
 <meta name="keywords"
       content="{{ $this->TRIMS($this->MTTR['KEYWORDS']) }}"/>
-{( endif )}
+{( fi )}
 
 {( $this->CALL_FUNCS('IN_HEAD') )}
 

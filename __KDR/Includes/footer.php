@@ -2,11 +2,11 @@
 
 if(!defined('ROOT')) require $_SERVER['ERROR_PATH'];
 
-/*
+/**
  * Default Footer File
  */
 
-/*
+/**
  * Sending App Strings to Client
  */
 $http_response_code = http_response_code();
@@ -43,7 +43,7 @@ $http_response_code = http_response_code();
         }
     }, false);
 </script>
-{( endif )}
+{( fi )}
 
 {( $this->CALL_FUNCS('IN_FOOTER') )}
 

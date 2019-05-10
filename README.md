@@ -1,11 +1,11 @@
 ![KDR](_default/assets/favicon.png?raw=true "KDR")
 
-**v1.5 : _Stable_**
+**v1.6 : _Stable_**
 
 
 > #### _Description_
 
-It is a micro (MVC) framework.
+It is a nano (MVC) framework.
 
 Host Multiple Apps, Lightweight, Powerful & Secure, Super Fast.
 
@@ -13,13 +13,13 @@ Smallest and Single Folded.
 
 Easiest way to move or update.
 
-As small as less than **_50KB_**
+As small as **_43KB_**
 
 
 > #### _Tested_
 
 - PHP (7.1, 7.2, 7.3)
-- Nginx (1.12, 1.13, 1.14)
+- Nginx (1.12, 1.13, 1.14, 1.15)
 
 
 > #### _Setup_
